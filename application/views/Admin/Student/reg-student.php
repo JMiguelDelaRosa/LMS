@@ -48,8 +48,11 @@
                                  ?>
                               </td>
                               <td class="center">
+                                 <?php if($info['Status'] == 0){?>
                                  <a href="<?= base_url('Student_controller/activateStudent?id=' . $info['id']) ?>" onclick="return confirm('Are you sure you want to active this student?');""><button class="btn btn-primary"> Active</button> 
+                                 <?php } else { ?>
                                  <a href="<?= base_url('Student_controller/deActivateStudent?id=' . $info['id']) ?>" onclick="return confirm('Are you sure you want to block this student?');"" >  <button class="btn btn-danger"> Inactive</button>
+                                 <?php } ?>
                               </td>
                            </tr>
                         <?php endforeach ?>

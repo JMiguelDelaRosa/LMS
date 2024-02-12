@@ -40,7 +40,7 @@ class User_model extends CI_Model {
         return $query;
     }
 
-    private function updateStudentPassword($email, $newPass)
+    public function updateStudentPassword($email, $newPass)
     {
         $data = array('Password' => password_hash($newPass, PASSWORD_DEFAULT));
         $this->db->where('EmailId', $email);

@@ -29,7 +29,7 @@ class Admin extends CI_Controller {
         $data['book'] = count($this->Book_model->getBook());
         $data['bookDetails'] = count($this->BookDetails_model->getBookDetails());
         $data['bookReturn'] = count($this->BookDetails_model->returnBook());
-        $data['studentCount'] = count($this->Student_model->getStudent());
+        $data['studentCount'] = count($this->Student_model->getStudent()->result_array());
         $data['authorCount'] = count($this->Author_model->getAuthor());
         $data['categoryCount'] = count($this->Category_model->getCategory());
 

@@ -84,7 +84,7 @@ class Author_controller extends CI_Controller {
         }else
         {
             $data['author_info'] = $this->Author_model->getAuthor();
-            // print_r($data['author']);
+            
             $this->load->view('Templates/header', $data);
             $this->load->view('Templates/topbar_login');
             $this->load->view('Admin/Author/manage-author', $data);

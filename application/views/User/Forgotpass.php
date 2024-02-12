@@ -5,7 +5,8 @@
             <h4 class="header-line">User Password Recovery</h4>
         </div>
     </div>
-    <!--LOGIN PANEL START-->           
+    <!--LOGIN PANEL START-->     
+    <?= $this->session->flashdata('message') ?>      
     <div class="row">
         <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3" >
             <div class="panel panel-info">
@@ -13,7 +14,6 @@
                 LOGIN FORM
                 </div>
                 <div class="panel-body">
-                <?= $this->session->flashdata('message') ?>
                 <?php echo validation_errors('<p class="text-danger">', '</p>'); ?>
                 <?php echo form_open('User_controller/forgotPass'); ?>
                     <div class="form-group">

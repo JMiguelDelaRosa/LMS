@@ -7,6 +7,7 @@ class BookDetails_controller extends CI_Controller {
         parent::__construct();
         $this->load->library('session');
         $this->load->model('BookDetails_model');
+        $this->load->model('Book_model');
         $this->load->library('form_validation');
         $this->load->helper('date');
     }
@@ -19,7 +20,7 @@ class BookDetails_controller extends CI_Controller {
         $data['title'] = 'Issue Book';
         date_default_timezone_set("Asia/Manila");
         $dateToday = date('Y-m-d H:i:s', time());
-        
+
         if (strlen($this->session->userdata('alogin')) == 0) {
             redirect('');
         }else{
@@ -33,8 +34,16 @@ class BookDetails_controller extends CI_Controller {
             $this->load->view('Templates/footer');
         } else 
         {
+            $book = $this->Book_model->getBook();
+            $ISBN = $this->input->post('bookid');
+            $filteredBooks = array_filter($book, function($bookItem) use ($ISBN) {
+                return $bookItem['ISBNNumber'] == $ISBN;
+            });
+            $foundBook = reset($filteredBooks);
+            print_r($foundBook['id']);
+
             $bookData = [
-                'BookId' => $this->input->post('bookid'),
+                'BookId' => $foundBook['id'],
                 'StudentID' => $this->input->post('studentid'),
                 'IssuesDate' => $dateToday
             ];

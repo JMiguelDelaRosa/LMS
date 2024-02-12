@@ -92,8 +92,16 @@ class User_controller extends CI_Controller {
             {
                 if(password_verify($password, $result['Password']))
                 {
+                    if($result['Status'] == 1)
+                    {
                     $this->session->set_userdata('login', $email);
                     redirect('User_controller/userDashboard');
+                    } 
+                    else
+                    {
+                        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Your Account has been Blocked! Please contact Admin </div>');
+                        redirect('User_controller/index');
+                    }
                 }
                 else
                 {
@@ -224,20 +232,30 @@ class User_controller extends CI_Controller {
             $this->load->view('User/Forgotpass');
             $this->load->view('Templates/footer');
         } else {
-            $email = $this->input->post('email');
-            $mobile = $this->input->post('mobile');
-            $newPass = $this->input->post('newpassword');
+            $captchaValue = $this->input->post('vercode');
 
-            // Call the verifyEmail function to check if email and mobile match
-            $result = $this->User_model->verifyEmail($email, $mobile);
+            if ($captchaValue != $this->session->userdata('vercode') || $this->session->userdata('vercode') == '')
+            {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                <strong>Incorrect</strong> Verification Code!</div>');
+                redirect('User_controller/forgotPass');
+            } 
+            else
+            {
+                $email = $this->input->post('email');
+                $mobile = $this->input->post('mobile');
+                $newPass = $this->input->post('newpassword');
 
-            if ($result->num_rows() > 0) {
-                // Email and mobile match found, update the password
-                $this->User_model->updateStudentPassword($email, $newPass);
-                echo "Password updated successfully.";
-            } else {
-                // No match found, display an error message
-                echo "Invalid email or mobile.";
+                $result = $this->User_model->verifyEmail($email, $mobile);
+
+                if ($result->num_rows() > 0) {
+                    $this->User_model->updateStudentPassword($email, $newPass);
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Password changed successfully! </div>');
+                    redirect('User_controller/forgotPass');
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Password changed Failed! </div>');
+                    redirect('User_controller/forgotPass');
+                }
             }
         }
     }
@@ -256,34 +274,46 @@ class User_controller extends CI_Controller {
             $this->load->view('Templates/topbar', $data);
             $this->load->view('User/Signup');
             $this->load->view('Templates/footer');
-        } else {
-            $latestStudentId = $this->db->select_max('StudentId')->get('tblstudents')->row()->StudentId;
+        } else 
+        {
+            $captchaValue = $this->input->post('vercode');
 
-            $numericPart = (int) substr($latestStudentId, 3);
-            $newNumericPart = $numericPart + 1;
-
-            $newStudentId = 'SID' . sprintf('%03d', $newNumericPart);
-
-            $data = array(
-                'StudentId' => $newStudentId,
-                'FullName' => $this->input->post('fullname'),
-                'MobileNumber' => $this->input->post('mobileno'),
-                'EmailId' => $this->input->post('email'),
-                'Status' => '1',
-                'Password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT)
-            );
-
-            $this->db->insert('tblstudents', $data);
-            $rows = $this->db->affected_rows();
-
-            if ($rows > 0) {
-                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-                    An <strong> Account </strong> has been Created Successfully!</div>');
-            } else {
+            if ($captchaValue != $this->session->userdata('vercode') || $this->session->userdata('vercode') == '')
+            {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-                    Failed to Create New Account!</div>');
+                <strong>Incorrect</strong> Verification Code!</div>');
+                redirect('User_controller/signUp');
+            } 
+            else
+            {
+                $latestStudentId = $this->db->select_max('StudentId')->get('tblstudents')->row()->StudentId;
+
+                $numericPart = (int) substr($latestStudentId, 3);
+                $newNumericPart = $numericPart + 1;
+
+                $newStudentId = 'SID' . sprintf('%03d', $newNumericPart);
+
+                $data = array(
+                    'StudentId' => $newStudentId,
+                    'FullName' => $this->input->post('fullname'),
+                    'MobileNumber' => $this->input->post('mobileno'),
+                    'EmailId' => $this->input->post('email'),
+                    'Status' => '1',
+                    'Password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT)
+                );
+
+                $this->db->insert('tblstudents', $data);
+                $rows = $this->db->affected_rows();
+
+                if ($rows > 0) {
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+                        An <strong> Account </strong> has been Created Successfully!</div>');
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                        Failed to Create New Account!</div>');
+                }
+                redirect('User_controller/signUp');
             }
-            redirect('User_controller/signUp');
         }
     }
 

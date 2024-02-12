@@ -35,11 +35,11 @@
                         <label>Confirm Password </label>
                         <input class="form-control"  type="password" name="confirmpassword" autocomplete="off" required  />
                      </div>
-                     <!-- <div class="form-group">
+                     <div class="form-group">
                         <label>Verification code : </label>
                         <input type="text" name="vercode" maxlength="5" autocomplete="off" required style="width: 150px; height: 25px;" />
                         <img src="<?= base_url('User_controller/captcha'); ?>" alt="Captcha Image">
-                     </div> -->
+                     </div>
                      <button type="submit" name="signup" class="btn btn-danger" id="submit">Register Now </button>
                   </form>
                </div>
