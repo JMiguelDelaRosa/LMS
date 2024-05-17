@@ -16,7 +16,7 @@ class Admin extends CI_Controller {
     }
 	public function index()
 	{
-		$this->load->view('Admin/dashboard');
+		$this->dashboard();
 	}
     public function dashboard()
     {
@@ -33,10 +33,9 @@ class Admin extends CI_Controller {
         $data['authorCount'] = count($this->Author_model->getAuthor());
         $data['categoryCount'] = count($this->Category_model->getCategory());
 
-        $this->load->view('Templates/header', $data);
-        $this->load->view('Templates/topbar_login');
-        $this->load->view('Admin/dashboard', $data);
-        $this->load->view('Templates/footer');
+        $this->load->view('Templates/head', $data);
+        $this->load->view('Admin/dash', $data);
+        $this->load->view('Templates/foot');
         }
         
     }
@@ -52,12 +51,9 @@ class Admin extends CI_Controller {
                 $password = $this->input->post('password');
                 $newpassword = $this->input->post('newpassword');
             }
-            
-
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar_login');
+            $this->load->view('Templates/head', $data);
             $this->load->view('Admin/change-password', $data);
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/foot');
         }
     }
     public function change_password()
@@ -80,18 +76,18 @@ class Admin extends CI_Controller {
 
         if ($this->form_validation->run() == FALSE) {
             // Load the change password view
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar_login');
+            $this->load->view('Templates/head', $data);
             $this->load->view('Admin/change-password');
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/foot');
         } else {
             $current_password = $this->input->post('current_password');
             $new_password = $this->input->post('new_password');
             $username = $this->session->userdata('alogin');
 
             $result = $this->Admin_model->getUsername($username);
+            print_r($result);
 
-            if (password_verify($current_password, $result['Password'])) {
+            if (password_verify($current_password, $result['password'])) {
                 $hashed_new_password = password_hash($new_password, PASSWORD_DEFAULT);
                 $this->Admin_model->updatePassword($username, $hashed_new_password);
 

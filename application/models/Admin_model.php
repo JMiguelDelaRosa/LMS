@@ -12,14 +12,14 @@ class Admin_model extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('admin');
-        $this->db->where('UserName', $username);
+        $this->db->where('userName', $username);
 
         $query = $this->db->get()->row_array();
         return $query;
     }
     public function updatePassword($username, $newPassword)
     {
-        $this->db->where('Username', $username);
-        $this->db->update('admin', array('Password' => $newPassword));
+        $this->db->where('userName', $username);
+        $this->db->update('admin', array('password' => $newPassword));
     }
 }

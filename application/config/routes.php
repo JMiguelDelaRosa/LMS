@@ -49,7 +49,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['default_controller'] = 'auth/index';
+$route['default_controller'] = 'User_controller/index';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
@@ -62,3 +62,38 @@ $route['dashboard'] = 'admin/dashboard';
 
 $route['login'] = 'admin/adminlogin';
 
+$route['dash'] = 'admin/dashboard';
+
+$route['category'] = 'Category_controller/add_category';
+$route['manage'] = 'Category_controller/manage_categories';
+
+$route['author'] = 'Author_controller/add_author';
+$route['manageAuthor'] = 'Author_controller/manage_author';
+
+$route['book'] = 'Book_controller/add_book';
+$route['manageBook'] = 'Book_controller/manage_book';
+
+$route['issueBook'] = 'BookDetails_controller/issue_book';
+$route['manageIssuedBook'] = 'BookDetails_controller/manage_issued_books';
+
+$route['registerStudent'] = 'Student_controller/register_student';
+$route['membership'] = 'Membership_controller/index';
+$route['studentList'] = 'Student_controller/student_list';
+
+$route['thisDay'] = 'Report_controller/index';
+$route['thisMonth'] = 'Report_controller/monthlyReport';
+
+$route['changePassword'] = 'Admin/change_password';
+
+
+// USER SIDE
+$route['userLogin'] = 'User_controller/index';
+$route['userSignup'] = 'User_controller/signUp';
+$route['forgotPass'] = 'User_controller/forgotPass';
+
+$route['userDash'] = 'User_controller/userDashboard';
+$route['userBook'] = 'User_controller/books';
+$route['userIssuedBook'] = 'User_controller/issuedBooks';
+
+$route['userProfile'] = 'User_controller/profile';
+$route['userChangePass'] = 'User_controller/changePass';

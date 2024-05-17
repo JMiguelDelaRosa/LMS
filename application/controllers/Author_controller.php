@@ -23,13 +23,12 @@ class Author_controller extends CI_Controller {
         {
             $this->form_validation->set_rules('author', 'Author', 'required');
             if ($this->form_validation->run() == false) {
-                    $this->load->view('Templates/header', $data);
-                    $this->load->view('Templates/topbar_login');
+                    $this->load->view('Templates/head', $data);
                     $this->load->view('Admin/Author/add-author');
-                    $this->load->view('Templates/footer');
+                    $this->load->view('Templates/foot');
             }else
             {
-                    $author = ['AuthorName' => $this->input->post('author')];
+                    $author = ['authorName' => $this->input->post('author')];
                     $this->db->insert('tblauthors', $author);
                     $rows = $this->db->affected_rows();
                     if ($rows > 0) {
@@ -58,17 +57,16 @@ class Author_controller extends CI_Controller {
                 
                 if ($this->input->post()) {
                     $authorName = $this->input->post('author');
-                    $this->db->where(['id' => $author_id])->update('tblauthors', ['AuthorName' => $authorName]);
+                    $this->db->where(['id' => $author_id])->update('tblauthors', ['authorName' => $authorName]);
 
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Update Successful! </div>');
                     redirect('Author_controller/manage_author');
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Failed to Edit Category!</div>');;
                 }
-                $this->load->view('Templates/header', $data);
-                $this->load->view('Templates/topbar_login');
+                $this->load->view('Templates/head', $data);
                 $this->load->view('Admin/Author/edit-author');
-                $this->load->view('Templates/footer');
+                $this->load->view('Templates/foot');
             } else 
             {
                 echo "Author ID not provided";
@@ -85,10 +83,9 @@ class Author_controller extends CI_Controller {
         {
             $data['author_info'] = $this->Author_model->getAuthor();
             
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar_login');
+            $this->load->view('Templates/head', $data);
             $this->load->view('Admin/Author/manage-author', $data);
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/foot');
         }
     }
     public function delete_author()

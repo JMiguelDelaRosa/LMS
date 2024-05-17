@@ -9,6 +9,8 @@ class User_controller extends CI_Controller {
         $this->load->model('User_model');
         $this->load->model('BookDetails_model');
         $this->load->model('Student_model');
+        $this->load->model('Membership_model');
+        $this->load->model('Book_model');
         $this->load->helper('form'); 
         $this->load->database();
         $this->load->library('session');
@@ -21,10 +23,9 @@ class User_controller extends CI_Controller {
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
        
         if ($this->form_validation->run() == false) {
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar', $data);
-            $this->load->view('User/Userlogin');
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/head', $data);
+            $this->load->view('User/Signin/Userlogin');
+            $this->load->view('Templates/foot');
           } else {
             
             $this->userLogin();
@@ -36,36 +37,39 @@ class User_controller extends CI_Controller {
         
         $loginEmail = $this->session->userdata('login');
 
+
+
         if (strlen($this->session->userdata('login')) == 0) {
             redirect('');
         } else {
             $result = $this->User_model->getUsername($this->session->userdata('login'));
-            $user = $this->User_model->getUserById($result['StudentId']);
+            $user = $this->User_model->getUserById($result['studentID']);
 
             if ($user) {
                 $data['user'] = $user;
-                $studentId = $data['user']['StudentId'];
-                
+                $studentId = $data['user']['studentID'];
+
+                $data['studentInfo'] = $this->Student_model->getStudentById($studentId);
+
                 $issuedBooks = $this->BookDetails_model->getBookDetails();
 
                 $studentIds = array();
 
                 $matchingStudentInfo = array_filter($issuedBooks, function($book) use ($studentId) {
-                    return $book['StudentID'] == $studentId;
+                    return $book['studentID'] == $studentId;
                 });
                 $data['countedBook'] = count($matchingStudentInfo);
                 
 
                 $returnStatus = array_filter($issuedBooks, function($book) use ($studentId) {
-                    return $book['StudentID'] == $studentId && $book['ReturnStatus'] == 0;
+                    return $book['studentID'] == $studentId && $book['returnStatus'] == 0;
                 });
 
                 $data['unreturnedBook'] = count($returnStatus);
 
-                $this->load->view('Templates/header', $data);
-                $this->load->view('Templates/topbar_user');
-                $this->load->view('User/Dashboard', $data); 
-                $this->load->view('Templates/footer');
+                $this->load->view('Templates/head', $data);
+                $this->load->view('User/Loggedin/Dashboard', $data); 
+                $this->load->view('Templates/foot');
             } else {
                 redirect('');
             }
@@ -90,9 +94,9 @@ class User_controller extends CI_Controller {
             
             if(!empty($result))
             {
-                if(password_verify($password, $result['Password']))
+                if(password_verify($password, $result['password']))
                 {
-                    if($result['Status'] == 1)
+                    if($result['status'] == 1)
                     {
                     $this->session->set_userdata('login', $email);
                     redirect('User_controller/userDashboard');
@@ -100,14 +104,34 @@ class User_controller extends CI_Controller {
                     else
                     {
                         $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Your Account has been Blocked! Please contact Admin </div>');
-                        redirect('User_controller/index');
+                        redirect('');
                     }
                 }
                 else
                 {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Incorrect Password! </div>');
-                    redirect('User_controller/index');
+                    redirect('');
                 }
+            } else {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Email and Password does not Match!</div>');
+                redirect('');
+            }
+        }
+    }
+    public function navBar()
+    {
+        $loginEmail = $this->session->userdata('login');
+
+        if(empty($loginEmail)){
+            echo 'Error';
+        } else {
+            $result = $this->User_model->getUsername($loginEmail);
+            if(!empty($result)){
+                $studentId = $result['studentID'];
+                $data['studentInfo'] = $this->Student_model->getStudentById($studentId);
+                $this->load->view('Templates/userNavbar', $data);
+
+                $this->userDashboard();
             }
         }
     }
@@ -116,34 +140,34 @@ class User_controller extends CI_Controller {
         $data['title'] = 'Student Profile';
 
         $loginEmail = $this->session->userdata('login');
-
+        
         if (empty($loginEmail)) {
             redirect('');
         } else {
             $result = $this->User_model->getUsername($loginEmail);
 
             if (!empty($result)) {
-                $studentId = $result['StudentId'];
+                $studentId = $result['studentID'];
 
                 $data['studentInfo'] = $this->Student_model->getStudentById($studentId);
                 if($this->input->post())
                 {
                     $info = array(
-                        'FullName' => $this->input->post('fullname'),
-                        'MobileNumber' => $this->input->post('mobileno')
+                        'fullName' => $this->input->post('fullname'),
+                        'mobileNumber' => $this->input->post('mobileno')
                     );
-                    $this->db->where(['EmailId' => $loginEmail])->update('tblstudents', $info);
+                    $this->db->where(['emailID' => $loginEmail])->update('tblstudents', $info);
 
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Update Successful! </div>');
                     redirect('User_controller/userDashboard');
                 } else {
-                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Failed to Update!</div>');
+                    // $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Failed to Update!</div>');
+                $this->load->view('Templates/head', $data);
+                $this->load->view('User/Loggedin/Profile', $data); 
+                $this->load->view('Templates/foot');
                 }
 
-                $this->load->view('Templates/header', $data);
-                $this->load->view('Templates/topbar_user');
-                $this->load->view('User/Profile', $data); 
-                $this->load->view('Templates/footer');
+                
             } else {
                 redirect('');
             }
@@ -160,18 +184,39 @@ class User_controller extends CI_Controller {
             $issuedStudentBook = $this->BookDetails_model->issuedBook()->result_array();
             
             $filteredStudent = array_filter($this->Student_model->getStudent()->result_array(), function ($student) use ($loginEmail) {
-                return $student['EmailId'] == $loginEmail;
+                return $student['emailID'] == $loginEmail;
             });
             $student = reset($filteredStudent);
-            $studentId = $student['StudentId'];
+            $studentId = $student['studentID'];
             
+            $data['studentInfo'] = $this->Student_model->getStudentById($studentId);
+
             $data['issuedBook'] = array_filter($issuedStudentBook, function ($book) use ($studentId) {
-                return $book['StudentID'] == $studentId;
+                return $book['studentID'] == $studentId;
             });
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar_user');
-            $this->load->view('User/Issuedbook', $data); 
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/head', $data);
+            $this->load->view('User/Loggedin/Issuedbook', $data); 
+            $this->load->view('Templates/foot');
+        }
+    }
+    public function books()
+    {
+        $data['title'] = 'Books';
+        $loginEmail = $this->session->userdata('login');
+        if (strlen($loginEmail) == 0) {
+            redirect('');
+        } else {
+            $result = $this->User_model->getUsername($loginEmail);
+            
+            $studentId = $result['studentID'];
+
+            $data['studentInfo'] = $this->Student_model->getStudentById($studentId);
+
+            $data['books'] = $this->Book_model->getBookSet();
+            // print_r($data['books']);
+            $this->load->view('Templates/head', $data);
+            $this->load->view('User/Loggedin/Books', $data); 
+            $this->load->view('Templates/foot');
         }
     }
     public function logout()
@@ -182,9 +227,34 @@ class User_controller extends CI_Controller {
 
         redirect('');
     }
+    public function chatBot()
+    {
+        $data['title'] = 'ChatBot';
+        
+        $this->load->view('Templates/header', $data);
+        $this->load->view('Templates/topbar_user');
+        $this->load->view('User/Chatbot');
+        $this->load->view('Templates/footer');
+    }
+    public function botprocessing()
+    {
+        $msg = $this->input->post('msg');
+
+        exec("python ". APPPATH . "pyserver/ailita.py " . escapeshellarg($msg), $output, $result_code);
+
+        // Concatenate output lines into a single string
+        $botResponse = implode("\n", $output);
+
+        $this->output
+            ->set_content_type('application/json')
+            ->set_output(json_encode(['response' => $botResponse]));
+    }
+
     public function changePass()
     {
         $data['title'] = 'Change Password';
+
+        $loginEmail = $this->session->userdata('login');
 
         if (strlen($this->session->userdata('login')) == 0) {
             redirect('');
@@ -193,26 +263,31 @@ class User_controller extends CI_Controller {
             $this->form_validation->set_rules('newpassword', 'New Password', 'required|min_length[6]');
             $this->form_validation->set_rules('confirmpassword', 'Confirm Password', 'required|min_length[6]');
             if ($this->form_validation->run() == FALSE) {
-                $this->load->view('Templates/header', $data);
-                $this->load->view('Templates/topbar_user');
-                $this->load->view('User/Changepass');
-                $this->load->view('Templates/footer');
+
+                $result = $this->User_model->getUsername($loginEmail);
+            
+                $studentId = $result['studentID'];
+
+                $data['studentInfo'] = $this->Student_model->getStudentById($studentId);
+
+                $this->load->view('Templates/head', $data);
+                $this->load->view('User/Loggedin/Changepass', $data);
+                $this->load->view('Templates/foot');
             } else {
                 $password = $this->input->post('password');
                 $newPassword = $this->input->post('newpassword');
-                $email = $this->session->userdata('login');
 
-                $result = $this->User_model->getUsername($email);
-
-                if ($result && password_verify($password, $result['Password'])) {
+                $result = $this->User_model->getUsername($loginEmail);
+               
+                if ($result && password_verify($password, $result['password'])) {
                     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-                    $this->User_model->updatePassword($email, $hashedPassword);
+                    $this->User_model->updatePassword($loginEmail, $hashedPassword);
 
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Password changed successfully! </div>');
-                    redirect('User_controller/changePass');
+                    redirect('userChangePass');
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Incorrect current password! </div>');
-                    redirect('User_controller/changePass');
+                    redirect('userChangePass');
                 }
             }
         }
@@ -227,10 +302,9 @@ class User_controller extends CI_Controller {
         $this->form_validation->set_rules('confirmpassword', 'Confirm Password', 'required|matches[newpassword]');
 
         if ($this->form_validation->run() == FALSE) {
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar');
-            $this->load->view('User/Forgotpass');
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/head', $data);
+            $this->load->view('User/Signin/Forgotpass');
+            $this->load->view('Templates/foot');
         } else {
             $captchaValue = $this->input->post('vercode');
 
@@ -238,7 +312,7 @@ class User_controller extends CI_Controller {
             {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                 <strong>Incorrect</strong> Verification Code!</div>');
-                redirect('User_controller/forgotPass');
+                redirect('forgotPass');
             } 
             else
             {
@@ -251,10 +325,10 @@ class User_controller extends CI_Controller {
                 if ($result->num_rows() > 0) {
                     $this->User_model->updateStudentPassword($email, $newPass);
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Password changed successfully! </div>');
-                    redirect('User_controller/forgotPass');
+                    redirect('forgotPass');
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Password changed Failed! </div>');
-                    redirect('User_controller/forgotPass');
+                    redirect('forgotPass');
                 }
             }
         }
@@ -262,18 +336,26 @@ class User_controller extends CI_Controller {
     public function signUp()
     {
         $data['title'] = 'Sign Up';
+        $membership = $this->Membership_model->getMembership()->result_array();
+        $exclude = 'Admin';
+
+        $data['membership'] = array_filter($membership, function($row) use ($exclude) {
+            return $row['membershipType'] !== $exclude;
+        });
+        
         $this->load->library('form_validation');
 
         $this->form_validation->set_rules('fullname', 'Full Name', 'required');
         $this->form_validation->set_rules('mobileno', 'Mobile Number', 'required');
+        $this->form_validation->set_rules('membership', 'Membership', 'required');
         $this->form_validation->set_rules('email', 'Email', 'required|valid_email');
         $this->form_validation->set_rules('password', 'Password', 'required');
+        $this->form_validation->set_rules('confirmpassword', 'Confirm Password', 'required|matches[password]');
 
         if ($this->form_validation->run() == FALSE) {
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar', $data);
-            $this->load->view('User/Signup');
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/head', $data);
+            $this->load->view('User/Signin/Signup');
+            $this->load->view('Templates/foot');
         } else 
         {
             $captchaValue = $this->input->post('vercode');
@@ -282,7 +364,7 @@ class User_controller extends CI_Controller {
             {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                 <strong>Incorrect</strong> Verification Code!</div>');
-                redirect('User_controller/signUp');
+                redirect('userSignup');
             } 
             else
             {
@@ -294,12 +376,13 @@ class User_controller extends CI_Controller {
                 $newStudentId = 'SID' . sprintf('%03d', $newNumericPart);
 
                 $data = array(
-                    'StudentId' => $newStudentId,
-                    'FullName' => $this->input->post('fullname'),
-                    'MobileNumber' => $this->input->post('mobileno'),
-                    'EmailId' => $this->input->post('email'),
-                    'Status' => '1',
-                    'Password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT)
+                    'studentID' => $newStudentId,
+                    'fullName' => $this->input->post('fullname'),
+                    'mobileNumber' => $this->input->post('mobileno'),
+                    'membershipID' => $this->input->post('membership'),
+                    'emailID' => $this->input->post('email'),
+                    'status' => '1',
+                    'password' => password_hash($this->input->post('password'), PASSWORD_DEFAULT)
                 );
 
                 $this->db->insert('tblstudents', $data);
@@ -308,11 +391,12 @@ class User_controller extends CI_Controller {
                 if ($rows > 0) {
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
                         An <strong> Account </strong> has been Created Successfully!</div>');
+                        redirect('userLogin');
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                         Failed to Create New Account!</div>');
                 }
-                redirect('User_controller/signUp');
+                redirect('userSignup');
             }
         }
     }

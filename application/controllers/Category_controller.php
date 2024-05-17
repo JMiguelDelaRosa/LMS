@@ -25,15 +25,14 @@ class Category_controller extends CI_Controller {
         $this->form_validation->set_rules('status', 'Status', 'required');
 
         if ($this->form_validation->run() == false) {
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar_login');
-            $this->load->view('Admin/Category/add-category', $data);
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/head', $data);
+            $this->load->view('Admin/Category/category-add', $data);
+            $this->load->view('Templates/foot');
         }else
         {
             $data = array(
-                'CategoryName' => $this->input->post('category'),
-                'Status' => $this->input->post('status')
+                'categoryName' => $this->input->post('category'),
+                'status' => $this->input->post('status')
             );
             $this->db->insert('tblcategory', $data);
             $rows = $this->db->affected_rows();
@@ -60,21 +59,19 @@ class Category_controller extends CI_Controller {
                 
                 // $data['category_id'] = $category_id;
                 $data['category_info'] = $this->db->get_where('tblcategory', ['id' => $category_id])->result_array();
-
                 if ($this->input->post()) {
                     $stats = $this->input->post('status');
-                    $this->db->where(['id' => $category_id])->update('tblcategory', ['status' => $stats]);
-
+                    $catName = $this->input->post('category');
+                    $this->db->where(['id' => $category_id])->update('tblcategory', ['status' => $stats, 'categoryName' => $catName]);
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Update Successful! </div>');
                     redirect('Category_controller/manage_categories');
                 } else {
-                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Failed to Edit Category!</div>');;
+                    // $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Failed to Edit Category!</div>');;
                 }
 
-                $this->load->view('Templates/header', $data);
-                $this->load->view('Templates/topbar_login');
+                $this->load->view('Templates/head', $data);
                 $this->load->view('Admin/Category/edit-category', $data);
-                $this->load->view('Templates/footer');
+                $this->load->view('Templates/foot');
             } else 
             {
                 echo "Category ID not provided";
@@ -90,10 +87,9 @@ class Category_controller extends CI_Controller {
         }else{
         $data['category'] = $this->Category_model->getCategory();
         
-        $this->load->view('Templates/header', $data);
-        $this->load->view('Templates/topbar_login');
-        $this->load->view('Admin/Category/manage-categories', $data);
-        $this->load->view('Templates/footer');
+        $this->load->view('Templates/head', $data);
+        $this->load->view('Admin/Category/manage-category', $data);
+        $this->load->view('Templates/foot');
         }
     }
     public function delete_category()

@@ -10,31 +10,40 @@ class User_model extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('tblstudents');
-        $this->db->where('EmailId', $email);
+        $this->db->where('emailID', $email);
 
-        $query = $this->db->get()->row_array();
-        return $query;
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+        return null; 
+    }
     }
     public function updatePassword($email, $newPassword)
     {
-        $this->db->where('EmailId', $email);
-        $this->db->update('tblstudents', array('Password' => $newPassword));
+        $this->db->where('emailID', $email);
+        $this->db->update('tblstudents', array('password' => $newPassword));
     }
     public function getUserById($studentId)
     {
         $this->db->select('*');
         $this->db->from('tblstudents'); 
-        $this->db->where('StudentId', $studentId);
+        $this->db->where('studentID', $studentId);
         $query = $this->db->get();
-    
-        return $query->row_array();
+
+        if ($query->num_rows() > 0) {
+            return $query->row_array();
+        } else {
+            return null; 
+        }
     }
     public function verifyEmail($email, $mobile)
     {
         $this->db->select('*');
         $this->db->from('tblstudents');
-        $this->db->where('EmailId', $email);
-        $this->db->where('MobileNumber', $mobile);
+        $this->db->where('emailID', $email);
+        $this->db->where('mobileNumber', $mobile);
 
         $query = $this->db->get();
         return $query;
@@ -42,8 +51,8 @@ class User_model extends CI_Model {
 
     public function updateStudentPassword($email, $newPass)
     {
-        $data = array('Password' => password_hash($newPass, PASSWORD_DEFAULT));
-        $this->db->where('EmailId', $email);
+        $data = array('password' => password_hash($newPass, PASSWORD_DEFAULT));
+        $this->db->where('emailID', $email);
         $this->db->update('tblstudents', $data);
     }
 }

@@ -11,7 +11,6 @@ class Auth extends CI_Controller {
         $this->load->database();
         $this->load->library('session');
     }
-
     public function index() 
     {   
         $data['title'] = 'Library Management System';
@@ -20,10 +19,9 @@ class Auth extends CI_Controller {
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
        
         if ($this->form_validation->run() == false) {
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar', $data);
-            $this->load->view('Auth/Adminlogin');
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/head', $data);
+            $this->load->view('Auth/Signin');
+            $this->load->view('Templates/foot');
           } else {
             $this->adminLogin();
           }
@@ -52,10 +50,10 @@ class Auth extends CI_Controller {
             if(!empty($result))
             {
                 // echo $password;
-                if(password_verify($password, $result['Password']))
+                if(password_verify($password, $result['password']))
                 {
                     $this->session->set_userdata('alogin', $username);
-                    redirect('admin/dashboard');
+                    redirect('dash');
                 }
                 else
                 {

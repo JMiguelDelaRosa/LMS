@@ -26,25 +26,31 @@ class Book_controller extends CI_Controller {
         $this->form_validation->set_rules('bookname', 'Book Name', 'required');
         $this->form_validation->set_rules('category', 'Category', 'required');
         $this->form_validation->set_rules('author', 'Author', 'required');
+        $this->form_validation->set_rules('accessionNumber', 'Accession Number', 'required');
         $this->form_validation->set_rules('isbn', 'Isbn', 'required');
+        $this->form_validation->set_rules('publisher', 'Publisher', 'required');
+        $this->form_validation->set_rules('publication', 'Publication', 'required');
         $this->form_validation->set_rules('price', 'Price', 'required');
 
         $data['category'] = $this->db->get_where('tblcategory', ['status' => 1])->result_array();
         $data['author'] = $this->db->get('tblauthors')->result_array();
             // print_r($data['author']);
         if($this->form_validation->run() == false) {
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar_login');
+            $this->load->view('Templates/head', $data);
             $this->load->view('Admin/Book/add-book', $data);
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/foot');
         } else
         {
             $data = [
-                'BookName' => $this->input->post('bookname'),
-                'CatId' => $this->input->post('category'),
-                'AuthorId' => $this->input->post('author'),
-                'ISBNNumber' => $this->input->post('isbn'),
-                'BookPrice' => $this->input->post('price')
+                'bookName' => $this->input->post('bookname'),
+                'catID' => $this->input->post('category'),
+                'authorID' => $this->input->post('author'),
+                'publisher' => $this->input->post('publisher'),
+                'publication' => $this->input->post('publication'),
+                'accessionNumber' => $this->input->post('accessionNumber'),
+                'isbnNumber' => $this->input->post('isbn'),
+                'bookPrice' => $this->input->post('price'),
+                'bookStatus' => 1
             ];
             $this->db->insert('tblbooks', $data);
             $rows = $this->db->affected_rows();
@@ -69,10 +75,9 @@ class Book_controller extends CI_Controller {
         }else{
         $data['book'] = $this->Book_model->getBookSet();
         
-        $this->load->view('Templates/header', $data);
-        $this->load->view('Templates/topbar_login');
+        $this->load->view('Templates/head', $data);
         $this->load->view('Admin/Book/manage-book');
-        $this->load->view('Templates/footer');
+        $this->load->view('Templates/foot');
         }
     }
     public function edit_book()
@@ -87,38 +92,43 @@ class Book_controller extends CI_Controller {
             $data['info'] = $this->Book_model->getBookById($id);
             $data['category'] = $this->Category_model->getCategory();
             $data['author'] = $this->Author_model->getAuthor();
-
-            $updateBook = [
-                'BookName' => $this->input->post('bookname'),
-                'CatId' => $this->input->post('category'),
-                'AuthorId' => $this->input->post('author'),
-                'ISBNNumber' => $this->input->post('isbn'),
-                'BookPrice' => $this->input->post('price')
-            ];
-
-            $this->db->where('id', $id);
-            $this->db->update('tblbooks', $updateBook);
-
-            if ($this->db->affected_rows() > 0) {
-                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
-                    <strong> Book </strong> has been Updated Successfully!</div>');
-                    redirect('Book_controller/manage_book');
-            } else {
-                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
-                  Failed to add Book!</div>');
+            if($this->input->post())
+            {
+                $updateBook = [
+                    'bookName' => $this->input->post('bookname'),
+                    'catID' => $this->input->post('category'),
+                    'authorID' => $this->input->post('author'),
+                    'publication' => $this->input->post('publication'),
+                    'publisher' => $this->input->post('publisher'),
+                    'accessionNumber' => $this->input->post('accessionNumber'),
+                    'isbnNumber' => $this->input->post('isbn'),
+                    'bookPrice' => $this->input->post('price')
+                ];
+    
+                $this->db->where('id', $id);
+                $this->db->update('tblbooks', $updateBook);
+    
+                if ($this->db->affected_rows() > 0) {
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
+                        <strong> Book </strong> has been Updated Successfully!</div>');
+                        redirect('Book_controller/manage_book');
+                } else {
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
+                      Failed to add Book!</div>');
+                }
             }
+            
 
-            $this->load->view('Templates/header', $data);
-            $this->load->view('Templates/topbar_login');
+            $this->load->view('Templates/head', $data);
             $this->load->view('Admin/Book/edit-book', $data);
-            $this->load->view('Templates/footer');
+            $this->load->view('Templates/foot');
         }
     }
     public function delete_book()
     {
         $id = $this->input->get('id');
         $this->db->delete('tblbooks', ['id' => $id]);
-        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Room has been Removed!</div>');
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Book has been Removed!</div>');
         redirect('Book_controller/manage_book');
     }
 }

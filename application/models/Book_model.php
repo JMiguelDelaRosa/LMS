@@ -17,20 +17,20 @@ class Book_model extends CI_Model {
     }
     public function getBookSet()
     {
-        $this->db->select('tblbooks.*, tblcategory.CategoryName, tblauthors.AuthorName');
+        $this->db->select('tblbooks.*, tblcategory.categoryName, tblauthors.authorName');
         $this->db->from('tblbooks');
-        $this->db->join('tblcategory', 'tblbooks.CatId = tblcategory.id', 'left');
-        $this->db->join('tblauthors', 'tblbooks.AuthorId = tblauthors.id', 'left');
+        $this->db->join('tblcategory', 'tblbooks.catID = tblcategory.id', 'left');
+        $this->db->join('tblauthors', 'tblbooks.authorID = tblauthors.id', 'left');
 
         $query = $this->db->get()->result_array();
         return $query;
     }
     public function getBookById($id)
     {
-        $this->db->select('tblbooks.*, tblcategory.CategoryName, tblauthors.AuthorName');
+        $this->db->select('tblbooks.*, tblcategory.categoryName, tblauthors.authorName');
         $this->db->from('tblbooks');
-        $this->db->join('tblcategory', 'tblbooks.CatId = tblcategory.id', 'left');
-        $this->db->join('tblauthors', 'tblbooks.AuthorId = tblauthors.id', 'left');
+        $this->db->join('tblcategory', 'tblbooks.catID = tblcategory.id', 'left');
+        $this->db->join('tblauthors', 'tblbooks.authorID = tblauthors.id', 'left');
         
         $this->db->where('tblbooks.id', $id);
 

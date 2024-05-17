@@ -19,7 +19,7 @@ class Student_model extends CI_Model {
     {
         $this->db->select('*');
         $this->db->from('tblstudents');
-        $this->db->where('StudentId', $studentId);
+        $this->db->where('studentID', $studentId);
 
         $query = $this->db->get()->row_array();
         return $query;
