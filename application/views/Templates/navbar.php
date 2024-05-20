@@ -6,7 +6,7 @@
             <path fill="currentColor" d="M4,11V13H16L10.5,18.5L11.92,19.92L19.84,12L11.92,4.08L10.5,5.5L16,11H4Z"></path>
         </svg>
         </button>
-        <a href="" class="navbar-brand">
+        <a href="<?php echo base_url('dash') ?>" class="navbar-brand">
             <!--Logo start-->
             <img class="logo" src="<?php echo base_url('/assets/assets/images/LMS.png') ?>" alt="">
             <!--logo End-->        

@@ -1,0 +1,10 @@
+/* CSS to control the size of the chart */
+#productChartContainer {
+    width: 340px; /* Set the desired width */
+    height: 340px; /* Set the desired height */
+    margin: 0 auto; /* Center the chart horizontally */
+}
+#productChart {
+    width: 100% !important;
+    height: 100% !important;
+}

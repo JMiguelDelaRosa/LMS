@@ -48,20 +48,27 @@
                                                         <td class="center"><?php echo $cat['categoryName'] ?></td>
                                                         <td class="center" style="text-align: center;">
                                                             <?php if($cat['status'] == 1){ ?>
-                                                            <a href="#" class="btn btn-success btn-xs">Active</a>
+                                                            <a href="#" class="badge bg-success">Active</a>
                                                             <?php } else {?>
-                                                            <a href="#" class="btn btn-danger btn-xs">Inactive</a>
+                                                            <a href="#" class="badge bg-danger">Inactive</a>
                                                             <?php } ?>
                                                         </td>
                                                         <td class="center" style="text-align: center;"><?php echo $cat['creationDate'] ?></td>
                                                         <td class="center" style="text-align: center;"><?php echo $cat['updationDate'] ?></td>
                                                         <td class="center" style="text-align: center;">
-                                                        <a href="<?= base_url('Category_controller/edit_category?id=' . $cat['id']) ?>">
+                                                        <a href="<?= base_url('Category_controller/edit_category?id=' . $cat['id']) ?>" class="btn btn-sm btn-icon btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                                            <img src="<?= base_url('assets/img/edit.png') ?>" alt="" style="width: 25px">
+                                                        </a>
+                                                        <a href="<?= base_url('Category_controller/delete_category?id=' . $cat['id']) ?>" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                                                            <img src="<?= base_url('assets/img/delete.png') ?>" alt="" style="width: 25px">
+                                                        </a>
+                                                        <!-- <a href="<?= base_url('Category_controller/edit_category?id=' . $cat['id']) ?>">
                                                             <button class="btn btn-primary"><i class="fa fa-edit"></i> Edit</button>
                                                         </a>
                                                         <a href="<?= base_url('Category_controller/delete_category?id=' . $cat['id']) ?>" onclick="return confirm('Are you sure you want to delete?');">
                                                             <button class="btn btn-danger"><i class="fa fa-pencil"></i> Delete</button>
-                                                        </a></td>
+                                                        </a> -->
+                                                        </td>
                                                     </tr>
                                                 <?php endforeach ?>
                                                 </tbody>

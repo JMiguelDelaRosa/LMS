@@ -113,7 +113,7 @@ class Student_controller extends CI_Controller {
                     $this->db->where(['id' => $id])->update('tblstudents', ['fullName' => $studentName, 'mobileNumber' => $phoneNumber, 'emailID' => $email, 'membershipID' => $membership]);
 
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Update Successful! </div>');
-                    redirect('Student_controller/reg_student');
+                    redirect('studentList');
                 } else {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Failed to Update!</div>');;
                 }
@@ -133,7 +133,7 @@ class Student_controller extends CI_Controller {
         if($update)
         {
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> <strong> Student </strong> has been set as Active!</div>');
-            redirect('Student_controller/student_list');
+            redirect('studentList');
         }
     }
     public function deActivateStudent()
@@ -143,7 +143,7 @@ class Student_controller extends CI_Controller {
         if($update)
         {
             $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> <strong> Student </strong> has been <strong> Blocked! </strong> </div>');
-            redirect('Student_controller/student_list');
+            redirect('studentList');
         }
     }
     public function export_csv() 

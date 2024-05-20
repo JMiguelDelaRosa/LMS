@@ -26,12 +26,33 @@ class Admin extends CI_Controller {
             redirect('');
         }else{
 
-        $data['book'] = count($this->Book_model->getBook());
-        $data['bookDetails'] = count($this->BookDetails_model->getBookDetails());
-        $data['bookReturn'] = count($this->BookDetails_model->returnBook());
-        $data['studentCount'] = count($this->Student_model->getStudent()->result_array());
-        $data['authorCount'] = count($this->Author_model->getAuthor());
-        $data['categoryCount'] = count($this->Category_model->getCategory());
+            $issuedBooks = $this->BookDetails_model->issuedBook()->result_array();
+
+            usort($issuedBooks, function($a, $b) {
+                return strtotime($b['issuesDate']) - strtotime($a['issuesDate']);
+            });
+            
+            $data['issuedBooks'] = array_slice($issuedBooks, 0, 10);
+
+            $data['bookByStatus'] = count($this->Book_model->getBookByStatus(0));
+
+            $bookDetails = $this->BookDetails_model->getBookDetails();
+
+            $monthlyData = array_fill(0, 12, 0); 
+
+            foreach ($bookDetails as $book) {
+                $month = date('n', strtotime($book['issuesDate'])) - 1; 
+                $monthlyData[$month]++;
+            }
+
+            $data['monthlyData'] = json_encode($monthlyData);
+
+            $data['book'] = count($this->Book_model->getBook());
+            $data['bookDetails'] = count($this->BookDetails_model->getBookDetails());
+            $data['bookReturn'] = count($this->BookDetails_model->returnBook());
+            $data['studentCount'] = count($this->Student_model->getStudent()->result_array());
+            $data['authorCount'] = count($this->Author_model->getAuthor());
+            $data['categoryCount'] = count($this->Category_model->getCategory());
 
         $this->load->view('Templates/head', $data);
         $this->load->view('Admin/dash', $data);

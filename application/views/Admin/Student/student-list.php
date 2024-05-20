@@ -101,19 +101,25 @@
                                                             <?php
                                                             if($info['status'] == 1)
                                                             {
-                                                                echo '<div class="text-success" >Active</div>';
+                                                                echo '<div class="badge bg-success" >Active</div>';
                                                             } else {
-                                                                echo '<div class="text-danger" >Blocked</div>';
+                                                                echo '<div class="badge bg-danger" >Blocked</div>';
                                                             }
                                                             ?>
                                                         </td>
                                                         
                                                         <td class="center" style="text-align: center;">
-                                                            <a href="<?= base_url('Student_controller/editStudent?id=' . $info['id']) ?>"><button class="btn btn-primary"><i class="fa fa-edit "></i> Edit</button> 
+                                                            <a href="<?= base_url('Student_controller/editStudent?id=' . $info['id']) ?>" class="btn btn-sm btn-icon btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                                            <img src="<?= base_url('assets/img/edit.png') ?>" alt="" style="width: 25px"> 
+                                                            </a>
                                                             <?php if($info['status'] == 0){?>
-                                                            <a href="<?= base_url('Student_controller/activateStudent?id=' . $info['id']) ?>" onclick="return confirm('Are you sure you want to active this student?');""><button class="btn btn-success"> Active</button> 
+                                                            <a href="<?= base_url('Student_controller/activateStudent?id=' . $info['id']) ?>" onclick="return confirm('Are you sure you want to active this student?');" class="btn btn-sm btn-icon btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Re-activate">
+                                                            <img src="<?= base_url('assets/img/check.png') ?>" alt="" style="width: 25px"> 
+                                                            </a>
                                                             <?php } else { ?>
-                                                            <a href="<?= base_url('Student_controller/deActivateStudent?id=' . $info['id']) ?>" onclick="return confirm('Are you sure you want to block this student?');"" >  <button class="btn btn-danger"> Block</button>
+                                                            <a href="<?= base_url('Student_controller/deActivateStudent?id=' . $info['id']) ?>" onclick="return confirm('Are you sure you want to block this student?');" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="De-activate">
+                                                            <img src="<?= base_url('assets/img/ex.png') ?>" alt="" style="width: 25px"> 
+                                                            </a>
                                                             <?php } ?>
                                                         </td>
                                                     </tr>

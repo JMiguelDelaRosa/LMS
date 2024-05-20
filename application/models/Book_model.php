@@ -38,4 +38,9 @@ class Book_model extends CI_Model {
 
         return $query;
     }
+    public function getBookByStatus($status){
+        $this->db->where('bookStatus', $status);
+        $query = $this->db->get('tblbooks');
+        return $query->result();
+    }
 }

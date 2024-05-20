@@ -50,5 +50,4 @@
     
     <!-- App Script -->
     <script src="<?php echo base_url('assets/assets/js/hope-ui.js') ?>" defer></script>
-  
 </html>

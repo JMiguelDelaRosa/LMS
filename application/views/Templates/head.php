@@ -36,4 +36,9 @@
       <!-- Bootstrap JS -->
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
+      <!-- Chart JS -->
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+      <link rel="stylesheet" href="<?= base_url('assets/css/chart.css') ?>">
+
   </head>

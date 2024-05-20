@@ -31,7 +31,7 @@
                                             <table class="table table-striped table-bordered table-hover" id="dataTable">
                                                 <thead>
                                                 <tr>
-                                                    <th>#</th>
+                                                    <th style="text-align: center;">#</th>
                                                     <th style="text-align: center;">Author</th>
                                                     <th style="text-align: center;">Creation Date</th>
                                                     <th style="text-align: center;">Updation Date</th>
@@ -41,13 +41,19 @@
                                                 <tbody>
                                                    <?php foreach($author_info as $info) : ?>
                                                    <tr class="odd gradeX">
-                                                      <td class="center"><?= $info['id'] ?></td>
-                                                      <td class="center"><?= $info['authorName'] ?></td>
-                                                      <td class="center"><?= $info['creationDate'] ?></td>
-                                                      <td class="center"><?= $info['updationDate'] ?></td>
-                                                      <td class="center">
-                                                         <a href="<?= base_url('Author_controller/edit_author?id=' . $info['id']) ?>"><button class="btn btn-primary"><i class="fa fa-edit "></i> Edit</button> 
-                                                         <a href="<?= base_url('Author_controller/delete_author?id=' . $info['id']) ?>" onclick="return confirm('Are you sure you want to delete?');"" >  <button class="btn btn-danger"><i class="fa fa-pencil"></i> Delete</button>
+                                                      <td class="center" style="text-align: center;"><?= $info['id'] ?></td>
+                                                      <td class="center" style="text-align: center;"><?= $info['authorName'] ?></td>
+                                                      <td class="center" style="text-align: center;"><?= $info['creationDate'] ?></td>
+                                                      <td class="center" style="text-align: center;"><?= $info['updationDate'] ?></td>
+                                                      <td class="center" style="text-align: center;">
+                                                        <a href="<?= base_url('Author_controller/edit_author?id=' . $info['id']) ?>" class="btn btn-sm btn-icon btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+                                                            <img src="<?= base_url('assets/img/edit.png') ?>" alt="" style="width: 25px">
+                                                        </a>
+                                                        <a href="<?= base_url('Author_controller/delete_author?id=' . $info['id']) ?>" class="btn btn-sm btn-icon btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                                                            <img src="<?= base_url('assets/img/delete.png') ?>" alt="" style="width: 25px">
+                                                        </a>
+                                                         <!-- <a href="<?= base_url('Author_controller/edit_author?id=' . $info['id']) ?>"><button class="btn btn-primary"><i class="fa fa-edit "></i> Edit</button>  -->
+                                                         <!-- <a href="<?= base_url('Author_controller/delete_author?id=' . $info['id']) ?>" onclick="return confirm('Are you sure you want to delete?');"" >  <button class="btn btn-danger"><i class="fa fa-pencil"></i> Delete</button> -->
                                                       </td>
                                                    </tr>
                                                    <?php endforeach ?>
