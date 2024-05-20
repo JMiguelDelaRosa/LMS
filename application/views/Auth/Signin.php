@@ -43,9 +43,9 @@
                                                 <img src="<?= base_url('auth/captcha'); ?>" alt="Captcha Image">
                                             </div>
                                         </div>
-                                        <div class="col-lg-12 d-flex justify-content-end">
+                                        <!-- <div class="col-lg-12 d-flex justify-content-end">
                                             <a href="recoverpw.html">Forgot Password?</a>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="d-flex justify-content-center">
                                         <button type="submit" name="login" class="btn btn-primary">Sign In</button>

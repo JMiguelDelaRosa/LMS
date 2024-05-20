@@ -146,10 +146,10 @@
                             <table id="basic-table" class="table table-striped mb-0" role="grid">
                               <thead>
                                   <tr>
-                                    <th>COMPANIES</th>
-                                    <th>CONTACTS</th>
-                                    <th>ORDER</th>
-                                    <th>COMPLETION</th>
+                                    <th>Book Name</th>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
                                   </tr>
                               </thead>
                               <tbody>
