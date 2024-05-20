@@ -188,7 +188,7 @@
                 <div class="card">
                   <div class="card-header d-flex justify-content-between flex-wrap">
                       <div class="header-title">
-                        <h4 class="card-title">Books Borrowed</h4>            
+                        <h5 class="card-title">Books Borrowed</h5>            
                       </div>   
                   </div>
                   <div class="card-body">
@@ -200,6 +200,11 @@
                   </div>
                 </div>
                 <div class="card">
+                  <div class="card-header d-flex justify-content-between flex-wrap">
+                      <div class="header-title">
+                        <h5 class="card-title">Books Borrowed Monthly</h5>            
+                      </div>   
+                  </div>
                   <div class="card-body d-flex justify-content-around text-center">
                       <canvas id="lineGraph" ></canvas>
                   </div>

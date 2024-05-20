@@ -34,7 +34,10 @@
                                 </div>
                                 <div class="form-group">
                                     <label>Accession Number<span style="color:red;">*</span></label>
-                                    <input class="form-control" type="text" name="accession" id="accession" onBlur="getbook()"  required="required" />
+                                    <input class="form-control" type="text" name="accession" id="accession" onBlur="getaccession()" required="required" />
+                                </div>
+                                <div class="form-group">
+                                    <span id="get_book_accession" style="font-size:16px;"></span> 
                                 </div>
                                 <div class="form-group">
                                     <label>Day/s of Issuance<span style="color:red;">*</span></label>
@@ -68,6 +71,22 @@
     },
     error:function (){}
     });
+    }
+    
+    function getaccession() {
+        $("#loaderIcon").show();
+        jQuery.ajax({
+            url: "<?= base_url('BookDetails_controller/checkAccession') ?>",
+            data: 'accession=' + $("#accession").val(),
+            type: "POST",
+            success: function(data) {
+                $("#get_book_accession").html(data);
+                $("#loaderIcon").hide();
+            },
+            error: function() {
+                $("#loaderIcon").hide();
+            }
+        });
     }
     
     </script> 

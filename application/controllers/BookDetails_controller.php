@@ -135,7 +135,7 @@ class BookDetails_controller extends CI_Controller {
         }
     }
     public function checkStudent() {
-        $studentid = strtoupper($this->input->post("studentid"));
+        $studentid = strtoupper($this->input->post('studentid'));
 
         $studentDetails = $this->BookDetails_model->getStudentDetails($studentid);
 
@@ -155,5 +155,26 @@ class BookDetails_controller extends CI_Controller {
             echo "<script>$('#submit').prop('disabled',true);</script>";
         }
     }
+    public function checkAccession() {
+        $accessionNumber = strtoupper($this->input->post('accession'));
+    
+        $bookDetails = $this->BookDetails_model->issuedBook()->result_array();
+        $bookAvailable = false;
+        foreach($bookDetails as $details) {
+            if ($details['returnDate'] == NULL) {
+                echo "<span style='color:green'> Book is Available </span><br />";
+                echo "<b>Book Name-</b> " . $details['bookName'];
+                echo "<script>$('#submit').prop('disabled',false);</script>";
+                $bookAvailable = true; 
+                break;
+            }
+        }
+        if (!$bookAvailable) {
+            echo "<span style='color:red'> Book is Not Available </span><br />";
+            echo "<b>Book Name-</b> " . $details['bookName'];
+            echo "<script>$('#submit').prop('disabled',true);</script>";
+        }
+    }
+    
     
 }
