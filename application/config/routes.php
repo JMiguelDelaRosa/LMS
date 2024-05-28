@@ -60,7 +60,7 @@ $route['signup'] = 'auth/signup';
 $route['signin'] = 'auth/userlogin';
 $route['dashboard'] = 'admin/dashboard';
 
-$route['login'] = 'admin/adminlogin';
+$route['login'] = 'User_controller/index';
 
 $route['dash'] = 'admin/dashboard';
 

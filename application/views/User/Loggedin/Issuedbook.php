@@ -33,10 +33,10 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Book Name</th>
-                                                    <th>ISBN </th>
-                                                    <th>Issued Date</th>
-                                                    <th>Return Date</th>
-                                                    <th>Fine in(USD)</th>
+                                                    <th style="text-align: center;">Accession Number</th>
+                                                    <th style="text-align: center;">Issued Date</th>
+                                                    <th style="text-align: center;">Return Date</th>
+                                                    <th style="text-align: center;">Fine</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody>
@@ -46,19 +46,19 @@
                                                 $count++ ?>
                                                 <tr class="odd gradeX">
                                                     <td class="center"><?= $count ?></td>
-                                                    <td class="center"><?= $book['bookName'] ?></td>
-                                                    <td class="center"><?= $book['accessionNumber'] ?></td>
-                                                    <td class="center"><?= $book['issuesDate'] ?></td>
-                                                    <td class="center">
+                                                    <td class="center" style="text-align: center;"><?= $book['bookName'] ?></td>
+                                                    <td class="center" style="text-align: center;"><?= $book['accessionNumber'] ?></td>
+                                                    <td class="center" style="text-align: center;"><?= date('F j, Y', strtotime($book['issuesDate'])); ?></td>
+                                                    <td class="center" style="text-align: center;">
                                                     <?php if($book['returnDate'] == NULL){ ?>
                                                         <span style="color:red">
                                                         <?= 'Not Returned Yet' ?>
                                                         </span>
                                                     <?php } else {
-                                                        echo $book['returnDate'];
+                                                        echo date('F j, Y', strtotime($book['returnDate']));
                                                     } ?>
                                                     </td>
-                                                    <td class="center"><?= $book['fine'] ?></td>
+                                                    <td class="center" style="text-align: center;"><?= $book['fine'] ?></td>
                                                 </tr>
                                                 <?php endforeach ?>
                                                 </tbody>

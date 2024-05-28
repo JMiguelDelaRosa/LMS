@@ -156,23 +156,22 @@ class BookDetails_controller extends CI_Controller {
         }
     }
     public function checkAccession() {
-        $accessionNumber = strtoupper($this->input->post('accession'));
-    
-        $bookDetails = $this->BookDetails_model->issuedBook()->result_array();
-        $bookAvailable = false;
-        foreach($bookDetails as $details) {
-            if ($details['returnDate'] == NULL) {
-                echo "<span style='color:green'> Book is Available </span><br />";
-                echo "<b>Book Name-</b> " . $details['bookName'];
+        $accession = strtoupper($this->input->post('accession'));
+        
+        $bookDetails = $this->BookDetails_model->getBookByAccession($accession);
+        if (!empty($bookDetails)) {
+            if($bookDetails['returnDate'] == NULL){
+                echo "<span style='color:red'> Book is not Available </span>" . "<br />";
+                echo "<b>Book Name - </b>" . $bookDetails['bookName'];
+                echo "<script>$('#submit').prop('disabled',true);</script>";
+            } else {
+                echo "<span style='color:green'> Book is Available </span>" . "<br />";
+                echo htmlentities($bookDetails['bookName']);
                 echo "<script>$('#submit').prop('disabled',false);</script>";
-                $bookAvailable = true; 
-                break;
             }
-        }
-        if (!$bookAvailable) {
-            echo "<span style='color:red'> Book is Not Available </span><br />";
-            echo "<b>Book Name-</b> " . $details['bookName'];
-            echo "<script>$('#submit').prop('disabled',true);</script>";
+            
+        } else {
+            echo "<span style='color:red'> No Book is Found with Accession Number: </span>" . $accession;
         }
     }
     

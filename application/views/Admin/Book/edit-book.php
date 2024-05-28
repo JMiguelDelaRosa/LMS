@@ -17,9 +17,9 @@
                         <div class="card">
                             <div class="card-header d-flex justify-content-between flex-wrap">
                                 <div class="header-title">
-                                    <h4 class="card-title mb-2">Edit Author</h4>
+                                    <h4 class="card-title mb-2">Edit Book</h4>
                                     <p class="mb-0">
-                                        This section is for Updating Author Information
+                                        This section is for Updating Book Information
                                     </p>
                                 </div>
                             </div>
@@ -51,12 +51,19 @@
                                     </select>
                                  </div>
                                  <div class="form-group">
-                                    <label>ISBN Number<span style="color:red;">*</span></label>
-                                    <input class="form-control" type="text" name="isbn" value="<?php echo $info['isbnNumber'] ?>"  required="required" />
-                                    <p class="help-block">An ISBN is an International Standard Book Number.ISBN Must be unique</p>
+                                    <label>Publication<span style="color:red;">*</span></label>
+                                    <input class="form-control" type="text" name="publication" value="<?php echo $info['publication'] ?>"  required="required" />
                                  </div>
                                  <div class="form-group">
-                                    <label>Price in USD<span style="color:red;">*</span></label>
+                                    <label>Publisher<span style="color:red;">*</span></label>
+                                    <input class="form-control" type="text" name="publisher" value="<?php echo $info['publisher'] ?>"  required="required" />
+                                 </div>
+                                 <div class="form-group">
+                                    <label>Accession Number<span style="color:red;">*</span></label>
+                                    <input class="form-control" type="text" name="accessionNumber" value="<?php echo $info['accessionNumber'] ?>"  required="required" />
+                                 </div>
+                                 <div class="form-group">
+                                    <label>Price<span style="color:red;">*</span></label>
                                     <input class="form-control" type="text" name="price" value="<?php echo $info['bookPrice'] ?>"   required="required" />
                                  </div>
                                  

@@ -60,17 +60,19 @@
     <script>
     // function for get student name
     function getstudent() {
-    $("#loaderIcon").show();
-    jQuery.ajax({
-    url: "<?= base_url('BookDetails_controller/checkStudent') ?>",
-    data:'studentid='+$("#studentid").val(),
-    type: "POST",
-    success:function(data){
-    $("#get_student_name").html(data);
-    $("#loaderIcon").hide();
-    },
-    error:function (){}
-    });
+        $("#loaderIcon").show();
+        jQuery.ajax({
+            url: "<?= base_url('BookDetails_controller/checkStudent') ?>",
+            data:'studentid='+$("#studentid").val(),
+            type: "POST",
+            success:function(data){
+            $("#get_student_name").html(data);
+                $("#loaderIcon").hide();
+            },
+            error:function (){
+                $("#loaderIcon").hide();
+            }
+        });
     }
     
     function getaccession() {
@@ -88,6 +90,5 @@
             }
         });
     }
-    
     </script> 
 </body>

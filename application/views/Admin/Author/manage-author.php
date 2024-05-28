@@ -43,8 +43,16 @@
                                                    <tr class="odd gradeX">
                                                       <td class="center" style="text-align: center;"><?= $info['id'] ?></td>
                                                       <td class="center" style="text-align: center;"><?= $info['authorName'] ?></td>
-                                                      <td class="center" style="text-align: center;"><?= $info['creationDate'] ?></td>
-                                                      <td class="center" style="text-align: center;"><?= $info['updationDate'] ?></td>
+                                                      <td class="center" style="text-align: center;"><?= date('F j, Y', strtotime($info['creationDate'])); ?></td>
+                                                      <td class="center" style="text-align: center;">
+                                                      <?php  
+                                                        if($info['updationDate']){
+                                                            echo date('F j, Y', strtotime($info['updationDate']));
+                                                        } else {
+                                                            echo ' ';
+                                                        }
+                                                      ?>
+                                                      </td>
                                                       <td class="center" style="text-align: center;">
                                                         <a href="<?= base_url('Author_controller/edit_author?id=' . $info['id']) ?>" class="btn btn-sm btn-icon btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
                                                             <img src="<?= base_url('assets/img/edit.png') ?>" alt="" style="width: 25px">

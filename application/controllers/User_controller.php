@@ -44,6 +44,8 @@ class User_controller extends CI_Controller {
         } else {
             $result = $this->User_model->getUsername($this->session->userdata('login'));
             $user = $this->User_model->getUserById($result['studentID']);
+            
+            $data['book'] = count($this->Book_model->getBook());
 
             if ($user) {
                 $data['user'] = $user;
@@ -58,6 +60,7 @@ class User_controller extends CI_Controller {
                 $matchingStudentInfo = array_filter($issuedBooks, function($book) use ($studentId) {
                     return $book['studentID'] == $studentId;
                 });
+                
                 $data['countedBook'] = count($matchingStudentInfo);
                 
 
@@ -66,6 +69,22 @@ class User_controller extends CI_Controller {
                 });
 
                 $data['unreturnedBook'] = count($returnStatus);
+
+                $issuedStudentBook = $this->BookDetails_model->issuedBookDesc()->result_array();
+            
+                $filteredStudent = array_filter($this->Student_model->getStudent()->result_array(), function ($student) use ($loginEmail) {
+                    return $student['emailID'] == $loginEmail;
+                });
+                $student = reset($filteredStudent);
+                $studentId = $student['studentID'];
+                
+                $data['studentInfo'] = $this->Student_model->getStudentById($studentId);
+
+                $borrowerData = array_filter($issuedStudentBook, function ($book) use ($studentId) {
+                    return $book['studentID'] == $studentId;
+                });
+                
+                $data['issuedBook'] = array_slice($borrowerData, 0, 5);
 
                 $this->load->view('Templates/head', $data);
                 $this->load->view('User/Loggedin/Dashboard', $data); 
@@ -225,7 +244,7 @@ class User_controller extends CI_Controller {
 
         $this->session->sess_destroy();
 
-        redirect('');
+        redirect('login');
     }
     public function chatBot()
     {
