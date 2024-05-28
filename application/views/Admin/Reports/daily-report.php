@@ -28,7 +28,7 @@
 
                                  <!-- <input class="form-control" type="text" id="searchInput" placeholder="Search" style="margin-bottom: 10px;"> -->
                               
-                                 <table class="table table-striped table-bordered table-hover" id="dataTable">
+                                 <table class="table table-striped table-bordered table-hover" id="datatable">
                                     <thead>
                                        <tr>
                                           <th>Student ID</th>
@@ -63,6 +63,7 @@
                             </div>
                         </div>
                     </div>
+                    
                 </div>
             </div>
        </main>

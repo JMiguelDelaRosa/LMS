@@ -29,7 +29,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-body">
                                         <div class="table-responsive">
-                                            <table class="table table-striped table-bordered table-hover" id="dataTable">
+                                            <table class="table table-striped table-bordered table-hover" id="datatable">
                                                 <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -86,11 +86,6 @@
                                 </div>
                                 <!-- Table End -->
                             </div>
-                            <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-                            <script src="<?php echo base_url('assets/DataTables/datatables.min.js'); ?>"></script>
-                            <script>
-                            new DataTable('#dataTable');
-                            </script>
                         </div>
                     </div>
                 </div>

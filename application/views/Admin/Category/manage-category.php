@@ -80,11 +80,6 @@
                                 </div>
                                 <!-- Table End -->
                             </div>
-                            <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-                            <script src="<?php echo base_url('assets/DataTables/datatables.min.js'); ?>"></script>
-                            <script>
-                            new DataTable('#datatable');
-                            </script>
                         </div>
                     </div>
                 </div>
