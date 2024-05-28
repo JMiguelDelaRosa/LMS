@@ -72,7 +72,7 @@ class BookDetails_model extends CI_Model {
     }
     public function getBookByAccession($accession)
     {
-        $this->db->select('tblbooks.id, tblbooks.accessionNumber, tblbooks.bookName, tblissuedbookdetails.returnDate, tblissuedbookdetails.bookID');
+        $this->db->select('tblbooks.id, tblbooks.bookStatus, tblbooks.accessionNumber, tblbooks.bookName, tblissuedbookdetails.returnDate, tblissuedbookdetails.bookID');
         $this->db->from('tblbooks');
         $this->db->join('tblissuedbookdetails', 'tblbooks.id = tblissuedbookdetails.bookID', 'left');
         $this->db->where('tblbooks.accessionNumber', $accession);

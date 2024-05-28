@@ -160,7 +160,7 @@ class BookDetails_controller extends CI_Controller {
         
         $bookDetails = $this->BookDetails_model->getBookByAccession($accession);
         if (!empty($bookDetails)) {
-            if($bookDetails['returnDate'] == NULL){
+            if($bookDetails['bookStatus'] == 0){
                 echo "<span style='color:red'> Book is not Available </span>" . "<br />";
                 echo "<b>Book Name - </b>" . $bookDetails['bookName'];
                 echo "<script>$('#submit').prop('disabled',true);</script>";
